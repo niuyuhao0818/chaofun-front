@@ -14,7 +14,7 @@
     </div>
 
     <div class="game">
-      <div class="info" @click="toFirstTournament">炒饭第四届图寻个人赛开始啦，11月13号周日下午2点开赛，大家赶快来报名吧！！！</div>
+      <div class="info" @click="toFirstTournament">炒饭网络迷踪图寻第四届个人赛圆满结束！</div>
       <div v-if="times" class="times">图寻总轮次数：<span style="font-size: 18px">{{times}}</span></div>
       <section class="game_entrance">
         <div class="first_session_head">单人</div>
@@ -45,6 +45,7 @@
             <div class="describe">
               走遍大江南北
             </div>
+            <div class="card-top-right">可移动</div>
           </div>
         </div>
 
@@ -125,7 +126,7 @@
           </div>
           <div class="card" @click="redirectPage( '/scratch/home')">
             <div class="title">
-              图寻作弊器
+              炒饭小测验
             </div>
             <div class="describe">
               地理小测验，帮助你玩好图寻
@@ -186,9 +187,15 @@ export default {
       Notification.requestPermission(function (status) {
       })
     }
-    this.getTimes();
+    this.getTimesInterval();
   },
   methods:{
+    getTimesInterval() {
+      this.getTimes()
+      setInterval(() => {
+        this.getTimes();
+      }, 5000)
+    },
     getTimes() {
       api.getByPath('/api/v0/tuxun/getTotalGuess').then(res=>{
         this.times = res.data;
@@ -245,9 +252,9 @@ export default {
     },
     toFirstTournament() {
       try {
-        window.flutter_inappwebview.callHandler('toAppPost', {postId: '1218963'});
+        window.flutter_inappwebview.callHandler('toAppPost', {postId: '1219541'});
       } catch (e) {
-        window.open('/p/1218963', "_blank");
+        window.open('/p/1219541', "_blank");
       }
     }
   }

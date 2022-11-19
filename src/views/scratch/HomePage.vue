@@ -5,7 +5,9 @@
       <div v-if="totalTimes" style="font-size: 16px">总测验次数: {{totalTimes}}</div>
       <div class="top-right">
 <!--        <el-button type="primary" @click="toUserHome" round>个人首页</el-button>-->
-        <el-button type="primary" @click="toCreate" round>创建小测验</el-button>
+        <el-button @click="toCreate" round>创建小测验</el-button>
+        <div></div>
+        <el-button type="primary" @click="random" round>随机小测验</el-button>
       </div>
     </div>
 
@@ -13,9 +15,10 @@
       <el-radio-group v-model="sort" style="margin-bottom: 30px;" @change="changeSort">
       <el-radio-button label="hot">最热</el-radio-button>
         <el-radio-button label="new">最新</el-radio-button>
+        <el-radio-button label="mine">我创建的</el-radio-button>
       </el-radio-group>
       <div style="display: flex; padding-bottom: 8px" v-for="(item, index) in list" @click="gotoGuess(item)">
-        <img class="cover" :src="imgOrigin + item.cover" style="">
+        <img class="cover" :src="imgOrigin + item.cover + '?x-oss-process=image/resize,h_300/quality,q_75'" style="">
         </img>
         <div style="padding-left: 8px">
           <div style="font-size: 24px; font-weight: bold;">
@@ -67,8 +70,15 @@ export default {
 
     toCreate() {
       this.doLoginStatus().then((res) => {
-        window.location.href = '/scratch/create'
+        if (res) {
+          window.location.href = '/scratch/create'
+        }
       });
+    },
+    random() {
+      api.getByPath('/api/v0/scratch/game/random').then(res=>{
+        window.location.href = '/scratch/guess?id=' + res.data;
+      })
     },
 
     changeSort(tab, event) {
@@ -88,7 +98,9 @@ export default {
     margin: auto;
   }
   .cover {
-    max-width: 100px; max-height: 100px
+    width: 100px; height: 100px;
+    //background-color: grey;
+    object-fit: cover;
   }
 }
 
